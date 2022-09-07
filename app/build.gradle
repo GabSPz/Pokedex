@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -41,7 +43,30 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    //Insert images
+    implementation "com.squareup.picasso:picasso:2.71828"
+    //viewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    //LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1"
+    //activity
+    implementation "androidx.activity:activity-ktx:1.5.1"
+    //fragment
+    implementation "androidx.fragment:fragment-ktx:1.5.2"
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    //Gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+    //Corrutinas
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
+    //Dagger hilt
+    implementation "com.google.dagger:hilt-android:2.42"
+    kapt "com.google.dagger:hilt-android-compiler:2.42"
+    //Splash
+    implementation'androidx.core:core-splashscreen:1.0.0'
+
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.1'
     testImplementation 'junit:junit:4.13.2'
