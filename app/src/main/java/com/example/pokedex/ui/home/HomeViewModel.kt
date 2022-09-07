@@ -3,11 +3,27 @@ package com.example.pokedex.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.pokedex.data.model.PokedexModel
+import com.example.pokedex.domain.GetPokedexUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getPokedexUseCase: GetPokedexUseCase
+): ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val _pokedexList = MutableLiveData<List<PokedexModel>>()
+    val pokedexList: LiveData<List<PokedexModel>> = _pokedexList
+
+    fun onCreate(){
+        viewModelScope.launch {
+            val result = getPokedexUseCase.getPokedex()
+            if (result.isNotEmpty()){
+                _pokedexList.postValue(result)
+            }
+        }
     }
-    val text: LiveData<String> = _text
 }
