@@ -1,4 +1,4 @@
-package com.example.pokedex.core
+package com.example.pokedex.core.di
 
 import com.example.pokedex.data.network.ApiService
 import dagger.Module
