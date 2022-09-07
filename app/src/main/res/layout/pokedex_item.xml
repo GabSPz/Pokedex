@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="16dp"
+    app:cardCornerRadius="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivPokedexImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            tools:background="@color/black"
+            app:layout_constraintTop_toTopOf="@+id/container"
+            app:layout_constraintStart_toStartOf="@+id/container"
+            android:contentDescription="pokemon.png"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvPokedexName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Prueba"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintTop_toTopOf="@id/container"
+            app:layout_constraintStart_toEndOf="@+id/ivPokedexImage"
+            app:layout_constraintEnd_toEndOf="@id/container"
+            app:layout_constraintBottom_toBottomOf="@id/container"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
