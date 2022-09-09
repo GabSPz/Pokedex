@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.pokedex.R
-import com.example.pokedex.databinding.FragmentDashboardBinding
 import com.example.pokedex.databinding.FragmentPokemonOverlapBinding
 import com.google.android.gms.maps.GoogleMap
 

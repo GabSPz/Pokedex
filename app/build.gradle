@@ -68,7 +68,11 @@ dependencies {
     //Splash
     implementation'androidx.core:core-splashscreen:1.0.0'
     //Google Maps
-    implementation "com.google.android.gms:play-services-maps:18.1.0"
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+    implementation 'com.google.maps.android:maps-utils-ktx:3.2.0'
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.1'

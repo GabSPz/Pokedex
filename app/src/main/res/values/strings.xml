@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="start_tracking">Comenzar</string>
+    <string name="distance_value">%d meters</string>
+    <string name="stop_tracking">Finalizar</string>
 </resources>
