@@ -5,16 +5,25 @@ import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import com.example.pokedex.data.repository.LocationRepository
 import javax.inject.Inject
 
-class PermissionsManager (
-    private val activity: FragmentActivity,
+class PermissionsManager @Inject constructor(
     private val locationRepository: LocationRepository,
-    private val stepCounter: StepCounter
 ) {
+    private val _activity = MutableLiveData<FragmentActivity>()
+    private var activity: FragmentActivity? = _activity.value
 
-    private val locationPermissionProvider = activity.registerForActivityResult(
+
+    fun onCreate(activityFragmentActivity: FragmentActivity){
+        if (activityFragmentActivity != null){
+            _activity.postValue(activityFragmentActivity)
+
+        }
+    }
+
+    private val locationPermissionProvider = activity?.registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         if (granted) {
@@ -23,23 +32,22 @@ class PermissionsManager (
     }
 
     fun requestUserLocation() {
-        locationPermissionProvider.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        locationPermissionProvider?.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        locationPermissionProvider?.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
     private val activityRecognitionPermissionProvider =
-        activity.registerForActivityResult(
+        activity?.registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { granted ->
             if (granted) {
-                stepCounter.stepCounterConfig()
             }
         }
 
     fun requestActivityRecognition() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            activityRecognitionPermissionProvider.launch(Manifest.permission.ACTIVITY_RECOGNITION)
+            activityRecognitionPermissionProvider?.launch(Manifest.permission.ACTIVITY_RECOGNITION)
         } else {
-            stepCounter.stepCounterConfig()
         }
     }
 }

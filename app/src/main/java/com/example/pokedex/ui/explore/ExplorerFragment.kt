@@ -5,20 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.pokedex.R
 import com.example.pokedex.data.model.uiModel.UiModel
 import com.example.pokedex.databinding.FragmentExploreBinding
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.example.pokedex.databinding.FragmentPokemonOverlapBinding
+import com.example.pokedex.ui.explore.fragmentOverlap.PokemonOverlapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.AndroidEntryPoint
-
 @AndroidEntryPoint
 class ExplorerFragment : Fragment(),
     OnMapReadyCallback{
@@ -48,17 +48,26 @@ class ExplorerFragment : Fragment(),
 
         binding.btnStart.setOnClickListener{ onStartTravel()}
 
-        explorerViewModel.onCreate(activity = requireActivity())
+        binding.btnGetPokemon.setOnClickListener { onGetPokemon(container) }
+
+        binding
+        explorerViewModel.onCreate(requireActivity())
         return root
+    }
+
+    private fun onGetPokemon(view: ViewGroup?){
+        childFragmentManager.beginTransaction()
+            .show(PokemonOverlapFragment())
+        binding.fragmentCnt.isVisible = true
     }
 
     private fun onStartTravel(){
         if (binding.btnStart.text == getString(R.string.start_tracking)) {
-            //1
+
             startTracking()
             binding.btnStart.setText(R.string.stop_tracking)
         } else {
-            //2
+
             stopTracking()
             binding.btnStart.setText(R.string.start_tracking)
         }
@@ -66,12 +75,8 @@ class ExplorerFragment : Fragment(),
 
 
 
-
-
-
     override fun onMapReady(googleMap: GoogleMap) {
         maps = googleMap
-        //maps.setOnMyLocationClickListener { this }
         explorerViewModel.ui.observe(this, Observer {
             updateUi(it)
         })
@@ -96,6 +101,9 @@ class ExplorerFragment : Fragment(),
         if (uiModel.currentLocation != null && uiModel.currentLocation != maps.cameraPosition.target){
             maps.isMyLocationEnabled = true
             maps.animateCamera(CameraUpdateFactory.newLatLngZoom(uiModel.currentLocation, 18f))
+        }else{
+            Toast.makeText(this.context,"Error al conseguir tu ubicacion", Toast.LENGTH_SHORT).show()
+            stopTracking()
         }
         binding.tvDistance.text = uiModel.formattedDistance
         drawTravelTrack(uiModel.userTrack)
@@ -116,6 +124,10 @@ class ExplorerFragment : Fragment(),
     private fun createMapInstance(){
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     //@SuppressLint("MissingPermission")
@@ -210,10 +222,7 @@ class ExplorerFragment : Fragment(),
     //    ).show()
     //}
 //
-    //override fun onDestroyView() {
-    //    super.onDestroyView()
-    //    _binding = null
-    //}
+
 //
 //
 //

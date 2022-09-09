@@ -6,6 +6,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragmentCnt"
+        android:visibility="gone">
+        <fragment
+            android:id="@+id/fragmenta"
+            android:name="com.example.pokedex.ui.explore.fragmentOverlap.PokemonOverlapFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,8 +46,11 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <Button
+            android:id="@+id/btnGetPokemon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="Obtener Pokemon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -50,7 +68,8 @@
         android:layout_height="wrap_content"
         android:text="@string/start_tracking"
         android:backgroundTint="@color/white"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:layout_marginBottom="60dp"/>
 
 </LinearLayout>
 

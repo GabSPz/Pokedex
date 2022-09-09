@@ -1,6 +1,7 @@
 package com.example.pokedex.data.repository
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
@@ -15,9 +16,14 @@ import com.google.maps.android.ktx.utils.heatmaps.toWeightedLatLng
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class LocationRepository @Inject constructor(
-     private val activity: FragmentActivity
-) {
+class LocationRepository @Inject constructor() {
+
+    private lateinit var activity:Activity
+
+    fun getActivity(activityFrag: Activity) {
+        activity = activityFrag
+    }
+
     private val client by lazy {LocationServices.getFusedLocationProviderClient(activity)}
 
     private val locations = mutableListOf<LatLng>()
