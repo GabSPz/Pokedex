@@ -43,4 +43,8 @@ class ExplorerViewModel ( private val activity: Fragment ) : ViewModel() {
         })
     }
 
+    fun resetDistance(){
+        distance.postValue(0)
+    }
+
 }

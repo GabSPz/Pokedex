@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -27,6 +30,9 @@ class HomeFragment : Fragment() {
     private val pokedexList = mutableListOf<PokedexModel>()
 
     private lateinit var homeViewModel: HomeViewModel
+
+    private val pokedexFilter = mutableListOf<PokedexModel>()
+    private var pokedexSize : Int = 0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -64,6 +70,10 @@ class HomeFragment : Fragment() {
                             }
                             initRecyclerView(pokedexList)
                             adapter.notifyDataSetChanged()
+
+                            //for te searchView
+                            pokedexFilter.addAll(pokedex)
+                            pokedexSize = pokedexFilter.size
                         } else{
                             //show error
                         }

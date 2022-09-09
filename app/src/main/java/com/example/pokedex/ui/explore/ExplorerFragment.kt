@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.pokedex.R
 import com.example.pokedex.data.model.uiModel.UiModel
 import com.example.pokedex.databinding.FragmentExploreBinding
@@ -17,7 +15,7 @@ import com.example.pokedex.ui.explore.fragmentOverlap.PokemonOverlapFragment
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
-import dagger.hilt.android.AndroidEntryPoint
+
 class ExplorerFragment : Fragment(),
     OnMapReadyCallback{
 
@@ -47,12 +45,10 @@ class ExplorerFragment : Fragment(),
 
         binding.btnStart.setOnClickListener{ onStartTravel()}
         binding.btnGetPokemon.setOnClickListener { onGetPokemon() }
-        checkDistance()
         return root
     }
 
     private fun checkDistance(){
-
         explorerViewModel.getDistance()
         explorerViewModel.distance.observe(viewLifecycleOwner, Observer {
             if (it > 100){

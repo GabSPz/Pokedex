@@ -45,9 +45,8 @@ class PokemonOverlapFragment : Fragment() {
     }
 
     private fun closeInfo(){
-        activity?.supportFragmentManager?.popBackStack()
-        //requireActivity().supportFragmentManager.beginTransaction().show(ExplorerFragment())
-        //ExplorerFragment().closeInfo()
+        getFragmentManager()?.beginTransaction()?.remove(this)?.commit()
+        onDestroyView()
     }
 
     private fun putInfo(pokedexModel: PokedexModel) {

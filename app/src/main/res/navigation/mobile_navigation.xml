@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_explore"
         android:name="com.example.pokedex.ui.explore.ExplorerFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_explore"
         tools:layout="@layout/fragment_explore" />
 
 </navigation>

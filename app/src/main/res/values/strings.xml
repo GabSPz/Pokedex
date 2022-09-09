@@ -6,4 +6,5 @@
     <string name="start_tracking">Comenzar</string>
     <string name="distance_value">%d meters</string>
     <string name="stop_tracking">Finalizar</string>
+    <string name="title_explore">Explore</string>
 </resources>
