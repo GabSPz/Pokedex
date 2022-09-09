@@ -17,10 +17,7 @@ class PermissionsManager @Inject constructor(
 
 
     fun onCreate(activityFragmentActivity: FragmentActivity){
-        if (activityFragmentActivity != null){
-            _activity.postValue(activityFragmentActivity)
-
-        }
+        _activity.postValue(activityFragmentActivity)
     }
 
     private val locationPermissionProvider = activity?.registerForActivityResult(

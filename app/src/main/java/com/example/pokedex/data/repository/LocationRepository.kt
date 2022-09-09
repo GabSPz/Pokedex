@@ -18,9 +18,9 @@ import kotlin.math.roundToInt
 
 class LocationRepository @Inject constructor() {
 
-    private lateinit var activity:Activity
+    private lateinit var activity:FragmentActivity
 
-    fun getActivity(activityFrag: Activity) {
+    fun getActivity(activityFrag: FragmentActivity) {
         activity = activityFrag
     }
 

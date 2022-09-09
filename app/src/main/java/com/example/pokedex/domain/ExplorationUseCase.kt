@@ -1,5 +1,6 @@
 package com.example.pokedex.domain
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.example.pokedex.R
@@ -39,6 +40,7 @@ class ExplorationUseCase @Inject constructor(
     }
 
     fun onMapLoaded() {
+
         permissionsManager.requestUserLocation()
     }
 

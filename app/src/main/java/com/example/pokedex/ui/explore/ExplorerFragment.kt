@@ -13,14 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.pokedex.R
 import com.example.pokedex.data.model.uiModel.UiModel
 import com.example.pokedex.databinding.FragmentExploreBinding
-import com.example.pokedex.databinding.FragmentPokemonOverlapBinding
 import com.example.pokedex.ui.explore.fragmentOverlap.PokemonOverlapFragment
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
-class ExplorerFragment : Fragment(),
+class ExplorerFragment : FragmentActivity(),
     OnMapReadyCallback{
 
     private var _binding: FragmentExploreBinding? = null
@@ -45,13 +44,12 @@ class ExplorerFragment : Fragment(),
         val root: View = binding.root
 
         createMapInstance()
+        activity.is
+        explorerViewModel.onCreate()
 
         binding.btnStart.setOnClickListener{ onStartTravel()}
-
         binding.btnGetPokemon.setOnClickListener { onGetPokemon(container) }
 
-        binding
-        explorerViewModel.onCreate(requireActivity())
         return root
     }
 

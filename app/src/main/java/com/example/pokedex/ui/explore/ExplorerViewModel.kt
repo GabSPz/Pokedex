@@ -1,6 +1,7 @@
 package com.example.pokedex.ui.explore
 
 import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -17,10 +18,13 @@ private val explorationUseCase: ExplorationUseCase
     val ui = MutableLiveData<UiModel>()
 
     fun onCreate(activity: FragmentActivity){
-        explorationUseCase.onViewCreated(activity, )
-        explorationUseCase.ui.observe(activity, Observer {
-            ui.postValue(it)
-        })
+        if (activity != null) {
+            explorationUseCase.onViewCreated(activity, )
+            explorationUseCase.ui.observe(activity, Observer {
+                ui.postValue(it)
+            })
+        }
+
     }
     fun onMapLoaded(){
         explorationUseCase.onMapLoaded()
