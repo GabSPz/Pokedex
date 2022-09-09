@@ -4,23 +4,23 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.example.pokedex.data.repository.LocationRepository
 import javax.inject.Inject
 
-class PermissionsManager @Inject constructor(
-    private val locationRepository: LocationRepository,
+class PermissionsManager(
+    activity: Fragment,
+    private val locationRepository: LocationRepository
 ) {
-    private val _activity = MutableLiveData<FragmentActivity>()
-    private var activity: FragmentActivity? = _activity.value
+    //private val _activity = MutableLiveData<Fragment>()
+    //private  var activity:Fragment = Fragment()
 
-
-    fun onCreate(activityFragmentActivity: FragmentActivity){
-        _activity.postValue(activityFragmentActivity)
+    fun onCreate(activityFragmentActivity: Fragment) {
     }
 
-    private val locationPermissionProvider = activity?.registerForActivityResult(
+    private val locationPermissionProvider = activity.registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         if (granted) {
@@ -29,12 +29,12 @@ class PermissionsManager @Inject constructor(
     }
 
     fun requestUserLocation() {
-        locationPermissionProvider?.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        locationPermissionProvider?.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        locationPermissionProvider.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        locationPermissionProvider.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
     private val activityRecognitionPermissionProvider =
-        activity?.registerForActivityResult(
+        activity.registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { granted ->
             if (granted) {
@@ -43,7 +43,7 @@ class PermissionsManager @Inject constructor(
 
     fun requestActivityRecognition() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            activityRecognitionPermissionProvider?.launch(Manifest.permission.ACTIVITY_RECOGNITION)
+            activityRecognitionPermissionProvider.launch(Manifest.permission.ACTIVITY_RECOGNITION)
         } else {
         }
     }

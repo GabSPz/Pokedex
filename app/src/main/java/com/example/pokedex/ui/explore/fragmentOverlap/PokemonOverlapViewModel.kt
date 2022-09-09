@@ -22,7 +22,8 @@ class PokemonOverlapViewModel @Inject constructor(
         viewModelScope.launch {
             val result = getPokedexUseCase.getPokedex()
             if (result.isNotEmpty()){
-                val randomPokemon = result.random()
+                val randomNumber = (result.indices).random()
+                val randomPokemon = result[randomNumber]
                 _pokedex.postValue(randomPokemon)
             }
         }

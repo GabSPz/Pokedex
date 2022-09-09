@@ -18,15 +18,14 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.AndroidEntryPoint
-@AndroidEntryPoint
-class ExplorerFragment : FragmentActivity(),
+class ExplorerFragment : Fragment(),
     OnMapReadyCallback{
 
     private var _binding: FragmentExploreBinding? = null
 
     private lateinit var maps: GoogleMap
 
-    private lateinit var explorerViewModel: ExplorerViewModel
+    private  var explorerViewModel = ExplorerViewModel(this)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -37,23 +36,32 @@ class ExplorerFragment : FragmentActivity(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-         explorerViewModel =
-            ViewModelProvider(this).get(ExplorerViewModel::class.java)
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.fragmentCnt.isVisible = false
+
         createMapInstance()
-        activity.is
         explorerViewModel.onCreate()
 
         binding.btnStart.setOnClickListener{ onStartTravel()}
-        binding.btnGetPokemon.setOnClickListener { onGetPokemon(container) }
-
+        binding.btnGetPokemon.setOnClickListener { onGetPokemon() }
+        checkDistance()
         return root
     }
 
-    private fun onGetPokemon(view: ViewGroup?){
+    private fun checkDistance(){
+
+        explorerViewModel.getDistance()
+        explorerViewModel.distance.observe(viewLifecycleOwner, Observer {
+            if (it > 100){
+                onGetPokemon()
+            }
+        })
+    }
+
+    private fun onGetPokemon(){
         childFragmentManager.beginTransaction()
             .show(PokemonOverlapFragment())
         binding.fragmentCnt.isVisible = true
@@ -70,8 +78,6 @@ class ExplorerFragment : FragmentActivity(),
             binding.btnStart.setText(R.string.start_tracking)
         }
     }
-
-
 
     override fun onMapReady(googleMap: GoogleMap) {
         maps = googleMap
@@ -98,24 +104,18 @@ class ExplorerFragment : FragmentActivity(),
     private fun updateUi(uiModel: UiModel) {
         if (uiModel.currentLocation != null && uiModel.currentLocation != maps.cameraPosition.target){
             maps.isMyLocationEnabled = true
-            maps.animateCamera(CameraUpdateFactory.newLatLngZoom(uiModel.currentLocation, 18f))
-        }else{
-            Toast.makeText(this.context,"Error al conseguir tu ubicacion", Toast.LENGTH_SHORT).show()
-            stopTracking()
+            maps.animateCamera(CameraUpdateFactory.newLatLngZoom(uiModel.currentLocation, 15f))
         }
         binding.tvDistance.text = uiModel.formattedDistance
         drawTravelTrack(uiModel.userTrack)
     }
 
     private fun drawTravelTrack(userTrack: List<LatLng>) {
-
         val polylineOptions = PolylineOptions()
+        val points =polylineOptions.points
 
         maps.clear()
-
-        val points =polylineOptions.points
         points.addAll(userTrack)
-
         maps.addPolyline(polylineOptions)
     }
 
@@ -127,113 +127,4 @@ class ExplorerFragment : FragmentActivity(),
         super.onDestroyView()
         _binding = null
     }
-
-    //@SuppressLint("MissingPermission")
-    //private fun enableLocation() {
-    //    if (!::maps.isInitialized) return
-    //    if (isLocationPermissionGranted()) {
-    //        maps.isMyLocationEnabled = true
-    //    } else {
-    //        requestLocationPermission()
-    //    }
-    //}
-    //@SuppressLint("UseRequireInsteadOfGet")
-    //private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
-    //    requireContext(),
-    //    Manifest.permission.ACCESS_FINE_LOCATION
-    //) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-    //    requireContext() ,
-    //    Manifest.permission.ACCESS_COARSE_LOCATION
-    //) == PackageManager.PERMISSION_GRANTED
-//
-    //@SuppressLint("UseRequireInsteadOfGet")
-    //private fun requestLocationPermission() {
-    //    if (ActivityCompat.shouldShowRequestPermissionRationale(
-    //            requireContext() as Activity, Manifest.permission.ACCESS_FINE_LOCATION
-    //        ) && ActivityCompat.shouldShowRequestPermissionRationale(
-    //            requireContext() as Activity, Manifest.permission.ACCESS_COARSE_LOCATION
-    //        )
-    //    ) {
-    //        showPermissionDenied()
-    //    }else{
-    //        ActivityCompat.requestPermissions(requireContext() as Activity, arrayOf(
-    //            Manifest.permission.ACCESS_FINE_LOCATION,
-    //            Manifest.permission.ACCESS_COARSE_LOCATION),
-    //            RequestCodeLocation.REQUEST_CODE_LOCATION
-    //        )
-    //    }
-    //}
-//
-    //@SuppressLint("MissingPermission")
-    //override fun onRequestPermissionsResult(
-    //    requestCode: Int,
-    //    permissions: Array<out String>,
-    //    grantResults: IntArray
-    //) {
-    //    when(requestCode){
-    //        RequestCodeLocation.REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-    //            maps.isMyLocationEnabled = true
-    //        } else{
-    //            showPermissionDenied()
-    //        }
-    //        else -> {}
-    //    }
-    //}
-//
-    //@SuppressLint("MissingPermission")
-    //override fun onResume() {
-    //    super.onResume()
-    //    if (!::maps.isInitialized) return
-    //    if(!isLocationPermissionGranted()){
-    //        maps.isMyLocationEnabled = false
-    //        showPermissionDenied()
-    //    }
-    //}
-//
-//
-    //private fun getDistanceTraveled(distances: Float){
-    //    if (distances >= 100){
-//
-    //    }
-    //   //var distanceTotal = 0f
-    //   //var distanceX: Float = 0f
-    //   //var distanceY: Float = 0f
-    //   //var distanceZ: Float = 0f
-    //   //when (distanceTotal){
-    //   //    distanceX, distanceY, distanceZ -> if (distanceTotal <100f){
-    //   //
-    //   //    }
-    //   //}
-    //   //distances.forEach{
-    //   //    distanceX += it[0]
-    //   //    distanceY += it[1]
-    //   //    distanceZ += it[2]
-    //   //}
-//
-    //}
-//
-    //private fun showPermissionDenied(){
-    //    Toast.makeText(
-    //        this.context,
-    //        "Ve a los ajustes y acepta los permisos para poder utilizar esta función",
-    //        Toast.LENGTH_SHORT
-    //    ).show()
-    //}
-//
-
-//
-//
-//
-    //override fun onMyLocationClick(location: Location) {
-//
-    //    Toast.makeText(this.context, "Estas en ${location.latitude}, ${location.longitude}", Toast.LENGTH_SHORT).show()
-    //}
-//
-//
-//
-    //private fun getDistanceRun(steps: Long): Float {
-    //    return (steps * 78).toFloat() / 100000.toFloat()
-    //}
-
-
 }

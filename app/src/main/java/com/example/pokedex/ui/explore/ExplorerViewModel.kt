@@ -2,6 +2,7 @@ package com.example.pokedex.ui.explore
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -11,21 +12,19 @@ import com.example.pokedex.domain.ExplorationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
-class ExplorerViewModel @Inject constructor(
-private val explorationUseCase: ExplorationUseCase
-) : ViewModel() {
-    val ui = MutableLiveData<UiModel>()
+class ExplorerViewModel ( private val activity: Fragment ) : ViewModel() {
+    private val explorationUseCase =  ExplorationUseCase(activity)
 
-    fun onCreate(activity: FragmentActivity){
-        if (activity != null) {
-            explorationUseCase.onViewCreated(activity, )
+    val ui = MutableLiveData<UiModel>()
+    val distance = MutableLiveData<Int>()
+
+    fun onCreate(){
+            explorationUseCase.onViewCreated( )
             explorationUseCase.ui.observe(activity, Observer {
                 ui.postValue(it)
             })
-        }
-
     }
+
     fun onMapLoaded(){
         explorationUseCase.onMapLoaded()
     }
@@ -36,6 +35,12 @@ private val explorationUseCase: ExplorationUseCase
 
     fun onStartExplore(){
         explorationUseCase.startTracking()
+    }
+
+    fun getDistance(){
+        explorationUseCase.totalDistance.observe(activity, Observer {
+            distance.postValue(it)
+        })
     }
 
 }

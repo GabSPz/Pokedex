@@ -1,7 +1,6 @@
 package com.example.pokedex.domain
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.example.pokedex.R
 import com.example.pokedex.data.maps.PermissionsManager
@@ -9,18 +8,15 @@ import com.example.pokedex.data.model.uiModel.UiModel
 import com.example.pokedex.data.repository.LocationRepository
 import javax.inject.Inject
 
-class ExplorationUseCase @Inject constructor(
-    private var locationRepository: LocationRepository,
-    private var permissionsManager : PermissionsManager
-) {
+class ExplorationUseCase (private val activity: Fragment) {
+    private val locationRepository = LocationRepository(activity)
+    private val permissionsManager  = PermissionsManager(activity, locationRepository)
+
     val ui = MutableLiveData(UiModel.EMPTY)
+    val totalDistance = MutableLiveData<Int>()
 
 
-
-    fun onViewCreated(activity: FragmentActivity) {
-        locationRepository.getActivity(activity)
-        permissionsManager.onCreate(activity)
-
+    fun onViewCreated() {
         locationRepository.liveLocations.observe(activity) { locations ->
             val current = ui.value
             ui.value = current?.copy(userTrack = locations)
@@ -35,12 +31,13 @@ class ExplorationUseCase @Inject constructor(
             val current = ui.value
             val formattedDistance = activity.getString(R.string.distance_value, distance)
             ui.value = current?.copy(formattedDistance = formattedDistance)
+            totalDistance.postValue(distance)
         }
 
     }
 
-    fun onMapLoaded() {
 
+    fun onMapLoaded() {
         permissionsManager.requestUserLocation()
     }
 
@@ -49,10 +46,12 @@ class ExplorationUseCase @Inject constructor(
         locationRepository.trackUser()
 
         val currentUi = ui.value
-        ui.value = currentUi?.copy(
+         ui.value = currentUi?.copy(
             formattedDistance = UiModel.EMPTY.formattedDistance
         )
     }
+
+
 
     fun stopTracking() {
         locationRepository.stopTracking()
