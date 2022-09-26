@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -49,7 +50,13 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.sflPokedex.startShimmer()
+
         getPokedex()
+        homeViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.sflPokedex.isVisible = it
+            binding.rvPokedex.isVisible = !it
+        })
 
         return root
     }

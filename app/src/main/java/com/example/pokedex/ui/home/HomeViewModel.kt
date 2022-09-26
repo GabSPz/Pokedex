@@ -16,13 +16,18 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _pokedexList = MutableLiveData<List<PokedexModel>>()
+    private val _isLoading = MutableLiveData<Boolean>()
+
     val pokedexList: LiveData<List<PokedexModel>> = _pokedexList
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun onCreate(){
+        _isLoading.postValue(true)
         viewModelScope.launch {
             val result = getPokedexUseCase.getPokedex()
             if (result.isNotEmpty()){
                 _pokedexList.postValue(result)
+                _isLoading.postValue(false)
             }
         }
     }

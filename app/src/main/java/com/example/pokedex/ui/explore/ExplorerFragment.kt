@@ -104,6 +104,7 @@ class ExplorerFragment : Fragment(),
         }
         binding.tvDistance.text = uiModel.formattedDistance
         drawTravelTrack(uiModel.userTrack)
+        checkDistance()
     }
 
     private fun drawTravelTrack(userTrack: List<LatLng>) {
