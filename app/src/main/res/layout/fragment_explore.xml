@@ -49,6 +49,7 @@
             android:id="@+id/btnGetPokemon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryColorVariant"
             android:textSize="14sp"
             android:text="Obtener Pokemon"
             app:layout_constraintEnd_toEndOf="parent"

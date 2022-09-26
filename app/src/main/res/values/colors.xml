@@ -8,4 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="loading">#C8C8C9</color>
+    <color name="primaryColor">#25316D</color>
+    <color name="primaryColorVariant">#5F6F94</color>
+    <color name="secondaryColor">#FFF6BF</color>
+    <color name="secondaryColorVariant">#FFEBAD</color>
+
+
+
+
 </resources>
