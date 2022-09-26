@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.pokedex">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".PokedexApp"
@@ -19,9 +19,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pokedex"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.pokemon.PokemonActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
@@ -35,7 +40,7 @@
         </activity>
         <activity
             android:name=".ui.NavigationActivity"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

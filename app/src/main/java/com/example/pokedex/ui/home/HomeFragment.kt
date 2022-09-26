@@ -19,6 +19,7 @@ import com.example.pokedex.data.model.PokedexModel
 import com.example.pokedex.data.model.PokemonSpecies
 import com.example.pokedex.databinding.FragmentHomeBinding
 import com.example.pokedex.ui.adapter.PokedexAdapter
+import com.example.pokedex.ui.pokemon.PokemonActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -96,14 +97,18 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initRecyclerView(pokedexList: List<PokedexModel>){
-        adapter = PokedexAdapter(pokedexList){  }
+        adapter = PokedexAdapter(pokedexList){ onItemSelected(it) }
         binding.rvPokedex.layoutManager = LinearLayoutManager(this@HomeFragment.context)
         binding.rvPokedex.adapter = adapter
     }
 
-    //private fun onItemSelected(pokemonSpecies: PokemonSpecies){
-    //    val intent = Intent(this.context, )
-    //}
+    private fun onItemSelected(pokedexModel: PokedexModel){
+        //go to PokemonActivity when the user click in anyone of the recycler view's items
+        val intent = Intent(this.context, PokemonActivity::class.java).apply {
+            putExtra("POKEMON_ID",pokedexModel.pokemonId)
+        }
+        startActivity(intent)
+    }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
