@@ -2,6 +2,7 @@ package com.example.pokedex.ui.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedex.core.extensions.firstCharUpper
 import com.example.pokedex.data.model.PokedexModel
 import com.example.pokedex.databinding.PokedexItemBinding
 import com.squareup.picasso.Picasso
@@ -14,16 +15,8 @@ class PokedexViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private lateinit var image: RequestCreator
 
     fun render(pokedexModel: PokedexModel) {
-        //CoroutineScope(Dispatchers.IO).launch{
-        //     getImage(pokedexModel.pokemonId)
-        //}
+
         Picasso.get().load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokedexModel.pokemonId}.png").into(binding.ivPokedexImage)
-        binding.tvPokedexName.text = pokedexModel.pokemonSpecies.pokemonName
-    }
-
-    private suspend fun getImage(id: Int){
-        coroutineScope {
-
-        }
+        binding.tvPokedexName.text = pokedexModel.pokemonSpecies.pokemonName.firstCharUpper()
     }
 }

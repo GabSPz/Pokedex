@@ -1,48 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPokedex"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/svPokedex"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:queryHint="Busca tu pokemon!"
+            android:layout_marginVertical="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"/>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/sflPokedex"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPokedex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                app:layout_constraintTop_toBottomOf="@id/svPokedex"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+             />
 
-            <include layout="@layout/pokedex_item_place_holder" />
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/sflPokedex"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/pokedex_item_place_holder" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <include layout="@layout/pokedex_item_place_holder" />
+                <include layout="@layout/pokedex_item_place_holder" />
 
-            <include layout="@layout/pokedex_item_place_holder" />
+                <include layout="@layout/pokedex_item_place_holder" />
 
-            <include layout="@layout/pokedex_item_place_holder" />
+                <include layout="@layout/pokedex_item_place_holder" />
 
-            <include layout="@layout/pokedex_item_place_holder" />
+                <include layout="@layout/pokedex_item_place_holder" />
 
-            <include layout="@layout/pokedex_item_place_holder" />
-        </LinearLayout>
+                <include layout="@layout/pokedex_item_place_holder" />
+
+                <include layout="@layout/pokedex_item_place_holder" />
+
+                <include layout="@layout/pokedex_item_place_holder" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-    </com.facebook.shimmer.ShimmerFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

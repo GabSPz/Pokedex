@@ -1,6 +1,7 @@
 package com.example.pokedex.ui.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pokedex.data.model.PokedexModel
+import com.example.pokedex.data.model.PokemonSpecies
 import com.example.pokedex.databinding.FragmentHomeBinding
 import com.example.pokedex.ui.adapter.PokedexAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +26,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var adapter: PokedexAdapter
@@ -50,12 +52,15 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.sflPokedex.startShimmer()
-
+        binding.svPokedex.setOnQueryTextListener(this)
         getPokedex()
         homeViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            if (it){
+                binding.sflPokedex.startShimmer()
+            }
             binding.sflPokedex.isVisible = it
             binding.rvPokedex.isVisible = !it
+            binding.svPokedex.isVisible = !it
         })
 
         return root
@@ -80,7 +85,7 @@ class HomeFragment : Fragment() {
 
                             //for te searchView
                             pokedexFilter.addAll(pokedex)
-                            pokedexSize = pokedexFilter.size
+                            pokedexSize = pokedex.size
                         } else{
                             //show error
                         }
@@ -91,9 +96,41 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerView(pokedexList: List<PokedexModel>){
-        adapter = PokedexAdapter(pokedexList){}
+        adapter = PokedexAdapter(pokedexList){  }
         binding.rvPokedex.layoutManager = LinearLayoutManager(this@HomeFragment.context)
         binding.rvPokedex.adapter = adapter
+    }
+
+    //private fun onItemSelected(pokemonSpecies: PokemonSpecies){
+    //    val intent = Intent(this.context, )
+    //}
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (newText.isNullOrEmpty() && binding.rvPokedex.size < pokedexSize){
+            pokedexList.apply {
+                clear()
+                addAll(pokedexFilter)
+            }
+            initRecyclerView(pokedexList)
+            adapter.notifyDataSetChanged()
+        } else{
+            val searchText = newText!!.lowercase(Locale.getDefault())
+            pokedexList.clear()
+
+            pokedexFilter.forEach {
+                if (it.pokemonSpecies.pokemonName.lowercase(Locale.getDefault()).contains(searchText)){
+                    pokedexList.add(it)
+                }
+            }
+            initRecyclerView(pokedexList)
+            adapter.notifyDataSetChanged()
+        }
+        return false
     }
 
     override fun onDestroyView() {
