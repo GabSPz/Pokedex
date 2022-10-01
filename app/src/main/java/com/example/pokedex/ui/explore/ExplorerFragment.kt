@@ -1,20 +1,24 @@
 package com.example.pokedex.ui.explore
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import com.example.pokedex.R
+import com.example.pokedex.core.NotificationsBuilder
 import com.example.pokedex.data.model.uiModel.UiModel
 import com.example.pokedex.databinding.FragmentExploreBinding
 import com.example.pokedex.ui.explore.fragmentOverlap.PokemonOverlapFragment
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
+
 
 class ExplorerFragment : Fragment(),
     OnMapReadyCallback{
@@ -42,8 +46,8 @@ class ExplorerFragment : Fragment(),
 
         createMapInstance()
         explorerViewModel.onCreate()
-
-        binding.btnStart.setOnClickListener{ onStartTravel()}
+        NotificationsBuilder.createChannel(this)
+        binding.btnStart.setOnClickListener{ onStartTravel() }
         binding.btnGetPokemon.setOnClickListener { onGetPokemon() }
         return root
     }
@@ -53,7 +57,9 @@ class ExplorerFragment : Fragment(),
         explorerViewModel.distance.observe(viewLifecycleOwner, Observer {
             if (it > 100){
                 onGetPokemon()
+                explorerViewModel.resetDistance()
             }
+
         })
     }
 
@@ -61,6 +67,7 @@ class ExplorerFragment : Fragment(),
         childFragmentManager.beginTransaction()
             .show(PokemonOverlapFragment())
         binding.fragmentCnt.isVisible = true
+        this.context?.let { NotificationsBuilder.createSimpleNotifications(it) }
     }
 
     private fun onStartTravel(){

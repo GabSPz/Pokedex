@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        screenSplash.setKeepOnScreenCondition{ true }
+
         val intent = Intent(this, NavigationActivity::class.java)
         startActivity(intent)
         finish()
