@@ -1,13 +1,12 @@
-package com.example.pokedex.ui.adapter
+package com.example.pokedex.ui.adapter.pokedex
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.core.extensions.firstCharUpper
-import com.example.pokedex.data.model.PokedexModel
+import com.example.pokedex.data.model.pokedexmodel.PokedexModel
 import com.example.pokedex.databinding.PokedexItemBinding
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
-import kotlinx.coroutines.*
 
 class PokedexViewHolder(view: View): RecyclerView.ViewHolder(view) {
 

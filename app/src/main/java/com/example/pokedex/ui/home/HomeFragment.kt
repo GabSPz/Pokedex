@@ -1,25 +1,21 @@
 package com.example.pokedex.ui.home
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokedex.data.model.PokedexModel
-import com.example.pokedex.data.model.PokemonSpecies
+import com.example.pokedex.data.model.pokedexmodel.PokedexModel
 import com.example.pokedex.databinding.FragmentHomeBinding
-import com.example.pokedex.ui.adapter.PokedexAdapter
+import com.example.pokedex.ui.adapter.pokedex.PokedexAdapter
 import com.example.pokedex.ui.pokemon.PokemonActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
