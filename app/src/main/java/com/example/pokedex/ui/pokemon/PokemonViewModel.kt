@@ -1,4 +1,49 @@
 package com.example.pokedex.ui.pokemon
 
-class PokemonViewModel {
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.pokedex.data.model.pokemonModel.PokemonModel
+import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
+import com.example.pokedex.domain.GetPokemonUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class PokemonViewModel @Inject constructor(
+    private val getPokemonUseCase: GetPokemonUseCase
+): ViewModel() {
+    private val _pokemon = MutableLiveData<PokemonModel>()
+    private val _evolutions = MutableLiveData<List<EvolutionPokemonModel>>()
+    private val _isLoading = MutableLiveData<Boolean>()
+
+    val pokemon: LiveData<PokemonModel> = _pokemon
+    val evolutions: LiveData<List<EvolutionPokemonModel>> = _evolutions
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun getPokemon(pokemonId: String) {
+        _isLoading.postValue(true)
+        viewModelScope.launch {
+            val result = getPokemonUseCase.getPokemon(pokemonId)
+            if (result != null) {
+                _pokemon.postValue(result!!)
+                _isLoading.postValue(false)
+            }
+        }
+    }
+
+    fun getEvolutionChain(pokemonId: String) {
+        _isLoading.postValue(true)
+        viewModelScope.launch {
+            val result = getPokemonUseCase.getEvolutionChain(pokemonId)
+            if (result.isNotEmpty()){
+                _evolutions.postValue(result)
+                _isLoading.postValue(false)
+            }
+        }
+    }
+
 }
