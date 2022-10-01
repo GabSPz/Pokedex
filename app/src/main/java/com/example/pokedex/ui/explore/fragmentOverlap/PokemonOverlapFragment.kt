@@ -6,9 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcherOwner
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
-import com.example.pokedex.data.model.pokedexmodel.PokedexModel
+import com.example.pokedex.R
+import com.example.pokedex.data.model.PokedexModel
 import com.example.pokedex.databinding.FragmentPokemonOverlapBinding
+import com.example.pokedex.ui.explore.ExplorerFragment
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

@@ -1,10 +1,10 @@
-package com.example.pokedex.ui.adapter.pokedex
+package com.example.pokedex.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.R
-import com.example.pokedex.data.model.pokedexmodel.PokedexModel
+import com.example.pokedex.data.model.PokedexModel
 
 class PokedexAdapter(
     private val pokedexList: List<PokedexModel>,

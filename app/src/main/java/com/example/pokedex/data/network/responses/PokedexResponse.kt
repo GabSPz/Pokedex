@@ -1,6 +1,6 @@
 package com.example.pokedex.data.network.responses
 
-import com.example.pokedex.data.model.pokedexmodel.PokedexModel
+import com.example.pokedex.data.model.PokedexModel
 import com.google.gson.annotations.SerializedName
 
 data class PokedexResponse(
