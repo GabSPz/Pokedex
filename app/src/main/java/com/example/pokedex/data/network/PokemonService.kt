@@ -17,10 +17,10 @@ class PokemonService @Inject constructor(
         }
     }
 
-    suspend fun getEvolutionChain(pokemonId: String): List<EvolutionPokemonModel>{
+    suspend fun getEvolutionChain(pokemonId: String): EvolutionChainResponse?{
         return withContext(Dispatchers.IO){
             val response = apiService.getEvolutionChain(pokemonId)
-            response.body()?.evolutions ?: emptyList()
+            response.body()
         }
     }
 }

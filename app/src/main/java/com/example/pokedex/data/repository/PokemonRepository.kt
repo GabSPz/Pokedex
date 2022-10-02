@@ -14,6 +14,6 @@ class PokemonRepository @Inject constructor(
     }
 
     suspend fun getEvolutionChain(pokemonId: String): List<EvolutionPokemonModel> {
-        return pokemonService.getEvolutionChain(pokemonId)
+        return pokemonService.getEvolutionChain(pokemonId)?.evolutions ?: emptyList()
     }
 }

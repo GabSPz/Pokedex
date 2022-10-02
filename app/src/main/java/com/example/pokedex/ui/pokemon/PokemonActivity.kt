@@ -1,16 +1,18 @@
 package com.example.pokedex.ui.pokemon
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokedex.R
+import com.example.pokedex.core.extensions.firstCharUpper
 import com.example.pokedex.data.model.pokemonModel.PokemonModel
 import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
 import com.example.pokedex.databinding.ActivityPokemonBinding
 import com.example.pokedex.ui.adapter.pokemon.PokemonAdapter
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,24 +33,28 @@ class PokemonActivity : AppCompatActivity() {
 
         binding = ActivityPokemonBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        pokemonViewModel.isLoading.observe(this, Observer {
+            binding
+        })
 
         getPokemonId()
     }
 
     private fun getPokemonId() {
         val bundle = intent.extras
-        val pokemonId = bundle?.get("POKEMON_ID") as String
+        val pokemonId = bundle?.get("POKEMON_ID") as Int
 
-        getAllPokemon(pokemonId)
+        getAllPokemon(pokemonId.toString())
     }
 
-    fun getAllPokemon(pokemonId: String){
+    private fun getAllPokemon(pokemonId: String){
         CoroutineScope(Dispatchers.IO).launch {
             pokemonViewModel.getEvolutionChain(pokemonId)
             pokemonViewModel.getPokemon(pokemonId)
             runOnUiThread {
                 pokemonViewModel.pokemon.observe(this@PokemonActivity, Observer {
                     pokemon = it
+                    putPokemonInfo()
                 })
                 pokemonViewModel.evolutions.observe(this@PokemonActivity, Observer {
                     evolutionList.addAll(it)
@@ -58,7 +64,15 @@ class PokemonActivity : AppCompatActivity() {
         }
     }
 
-    fun initRecyclerView(){
+    @SuppressLint("SetTextI18n")
+    private fun putPokemonInfo() {
+        Picasso.get().load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.pokemonId}.png").into(binding.ivPokemonImage)
+        binding.tvPokemonName.text = pokemon.pokemonName.firstCharUpper()
+        binding.tvContainer1.text = "Height: ${pokemon.height} ft"
+        binding.tvContainer2.text = "Weight: ${pokemon.weight} lb"
+    }
+
+    private fun initRecyclerView(){
         adapter = PokemonAdapter(evolutionList)
         binding.rvPokemonEvolution.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.rvPokemonEvolution.adapter = adapter

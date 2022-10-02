@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 data class EvolutionPokemonModel(
     @SerializedName ("evolution_details") val evolutionDetail: EvolutionDetail,
     @SerializedName ("species") val pokemonEvo: PokemonSpecies,
-    @SerializedName("evolves_to") val evolutions: List<EvolutionPokemonModel>
+    //@SerializedName("evolves_to") val evolutions: List<EvolutionPokemonModel>
 )
