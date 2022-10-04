@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokedex.data.model.pokemonModel.PokemonModel
 import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
+import com.example.pokedex.data.network.responses.EvolutionChainResponse
 import com.example.pokedex.domain.GetPokemonUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -17,11 +18,11 @@ class PokemonViewModel @Inject constructor(
     private val getPokemonUseCase: GetPokemonUseCase
 ): ViewModel() {
     private val _pokemon = MutableLiveData<PokemonModel>()
-    private val _evolutions = MutableLiveData<List<EvolutionPokemonModel>>()
+    private val _evolutions = MutableLiveData<EvolutionChainResponse>()
     private val _isLoading = MutableLiveData<Boolean>()
 
     val pokemon: LiveData<PokemonModel> = _pokemon
-    val evolutions: LiveData<List<EvolutionPokemonModel>> = _evolutions
+    val evolutions: LiveData<EvolutionChainResponse> = _evolutions
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun getPokemon(pokemonId: String) {
@@ -39,8 +40,8 @@ class PokemonViewModel @Inject constructor(
         _isLoading.postValue(true)
         viewModelScope.launch {
             val result = getPokemonUseCase.getEvolutionChain(pokemonId)
-            if (result.isNotEmpty()){
-                _evolutions.postValue(result)
+            if (result != null){
+                _evolutions.postValue(result!!)
                 _isLoading.postValue(false)
             }
         }

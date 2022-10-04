@@ -2,6 +2,7 @@ package com.example.pokedex.domain
 
 import com.example.pokedex.data.model.pokemonModel.PokemonModel
 import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
+import com.example.pokedex.data.network.responses.EvolutionChainResponse
 import com.example.pokedex.data.repository.PokemonRepository
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class GetPokemonUseCase @Inject constructor(
         return pokemonRepository.getPokemon(pokemonId)
     }
 
-    suspend fun getEvolutionChain(pokemonId: String): List<EvolutionPokemonModel> {
+    suspend fun getEvolutionChain(pokemonId: String): EvolutionChainResponse? {
         return pokemonRepository.getEvolutionChain(pokemonId)
     }
 }

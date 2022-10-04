@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class EvolutionChainResponse(
     @SerializedName("id") val evolutionID: Int,
-    @SerializedName("evolves_to") val evolutions: List<EvolutionPokemonModel>
+    @SerializedName("chain") val evolutions: EvolutionPokemonModel
 )

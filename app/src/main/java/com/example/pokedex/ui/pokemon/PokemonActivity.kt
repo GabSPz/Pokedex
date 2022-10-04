@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.core.extensions.firstCharUpper
+import com.example.pokedex.core.extensions.getPokemonIdByUrl
 import com.example.pokedex.data.model.pokemonModel.PokemonModel
 import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
 import com.example.pokedex.databinding.ActivityPokemonBinding
@@ -57,7 +58,7 @@ class PokemonActivity : AppCompatActivity() {
                     putPokemonInfo()
                 })
                 pokemonViewModel.evolutions.observe(this@PokemonActivity, Observer {
-                    evolutionList.addAll(it)
+                    evolutionList.addAll(it.evolutions.evolves)
                     initRecyclerView()
                 })
             }
@@ -66,7 +67,9 @@ class PokemonActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun putPokemonInfo() {
-        Picasso.get().load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.pokemonId}.png").into(binding.ivPokemonImage)
+        Picasso.get().load(
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.pokemonId}.png"
+        ).into(binding.ivPokemonImage)
         binding.tvPokemonName.text = pokemon.pokemonName.firstCharUpper()
         binding.tvContainer1.text = "Height: ${pokemon.height} ft"
         binding.tvContainer2.text = "Weight: ${pokemon.weight} lb"
