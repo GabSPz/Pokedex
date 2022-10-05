@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pokedex.core.extensions.getPokemonIdByUrl
 import com.example.pokedex.data.model.pokedexmodel.PokedexModel
 import com.example.pokedex.databinding.FragmentHomeBinding
 import com.example.pokedex.ui.adapter.pokedex.PokedexAdapter
@@ -102,7 +103,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun onItemSelected(pokedexModel: PokedexModel){
         //go to PokemonActivity when the user click in anyone of the recycler view's items
         val intent = Intent(this.context, PokemonActivity::class.java).apply {
-            putExtra("POKEMON_ID",pokedexModel.pokemonId)
+            putExtra("POKEMON_ID",pokedexModel.pokemonId.toString())
         }
         startActivity(intent)
     }

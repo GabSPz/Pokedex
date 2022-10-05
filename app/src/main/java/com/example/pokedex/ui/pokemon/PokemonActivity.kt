@@ -37,26 +37,38 @@ class PokemonActivity : AppCompatActivity() {
         pokemonViewModel.isLoading.observe(this, Observer {
             binding
         })
-
         getPokemonId()
     }
 
     private fun getPokemonId() {
         val bundle = intent.extras
-        val pokemonId = bundle?.get("POKEMON_ID") as Int
+        val pokemonId = bundle?.get("POKEMON_ID") as String
 
-        getAllPokemon(pokemonId.toString())
+        getPokemon(pokemonId)
     }
 
-    private fun getAllPokemon(pokemonId: String){
+    private fun getPokemon(pokemonId: String){
         CoroutineScope(Dispatchers.IO).launch {
-            pokemonViewModel.getEvolutionChain(pokemonId)
             pokemonViewModel.getPokemon(pokemonId)
+            pokemonViewModel.getPokemonSpecies(pokemonId)
             runOnUiThread {
                 pokemonViewModel.pokemon.observe(this@PokemonActivity, Observer {
                     pokemon = it
                     putPokemonInfo()
                 })
+                pokemonViewModel.species.observe(this@PokemonActivity, Observer {
+                    if(it != null){
+                        getEvolutions(it.speciesUrl.getPokemonIdByUrl())
+                    }
+                } )
+            }
+        }
+    }
+
+    private fun getEvolutions(id:String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            pokemonViewModel.getEvolutionChain(id)
+            runOnUiThread {
                 pokemonViewModel.evolutions.observe(this@PokemonActivity, Observer {
                     evolutionList.addAll(it.evolutions.evolves)
                     initRecyclerView()
