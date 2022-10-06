@@ -71,6 +71,7 @@ class PokemonActivity : AppCompatActivity() {
             runOnUiThread {
                 pokemonViewModel.evolutions.observe(this@PokemonActivity, Observer {
                     evolutionList.addAll(it.evolutions.evolves)
+                    getpo()
                     initRecyclerView()
                 })
             }
@@ -91,5 +92,28 @@ class PokemonActivity : AppCompatActivity() {
         adapter = PokemonAdapter(evolutionList)
         binding.rvPokemonEvolution.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.rvPokemonEvolution.adapter = adapter
+    }
+    fun getpo() {
+        var flag = true
+        val cont = 0
+        val evo = mutableListOf<EvolutionPokemonModel>()
+        val list = mutableListOf<EvolutionPokemonModel>()
+
+        evo.addAll(evolutionList)
+        evolutionList.clear()
+
+        do{
+            for (i in evo.indices) {
+                if (evo.isNotEmpty()) {
+                    list.addAll(evo)
+                    evo.clear()
+                    evo.addAll(list[i].evolves)
+                }else{
+                    flag = false
+                    evolutionList.addAll(list)
+                }
+            }
+
+        } while (!flag)
     }
 }
