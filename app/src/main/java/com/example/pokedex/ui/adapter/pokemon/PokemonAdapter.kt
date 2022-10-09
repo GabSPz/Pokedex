@@ -10,7 +10,7 @@ import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonMod
 class PokemonAdapter(
     private val evolutionList: List<EvolutionPokemonModel>,
     private val onCLick: (PokemonSpecies) -> Unit
-    ): RecyclerView.Adapter<PokemonViewHolder>() {
+) : RecyclerView.Adapter<PokemonViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return PokemonViewHolder(layoutInflater.inflate(R.layout.evolution_item, parent, false))

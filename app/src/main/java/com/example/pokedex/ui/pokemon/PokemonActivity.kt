@@ -28,7 +28,7 @@ class PokemonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPokemonBinding
     private val pokemonViewModel: PokemonViewModel by viewModels()
 
-    private lateinit var pokemon : PokemonModel
+    private lateinit var pokemon: PokemonModel
     private lateinit var adapter: PokemonAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,13 +43,15 @@ class PokemonActivity : AppCompatActivity() {
     }
 
     private fun getPokemonId() {
+        //When the user clicked on the before screen, this function take the pokemon id
+
         val bundle = intent.extras
         val pokemonId = bundle?.get("POKEMON_ID") as String
 
         getPokemon(pokemonId)
     }
 
-    private fun getPokemon(pokemonId: String){
+    private fun getPokemon(pokemonId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             pokemonViewModel.getPokemon(pokemonId)
             pokemonViewModel.getPokemonSpecies(pokemonId)
@@ -59,23 +61,32 @@ class PokemonActivity : AppCompatActivity() {
                     putPokemonInfo()
                 })
                 pokemonViewModel.species.observe(this@PokemonActivity, Observer {
-                    if(it != null){
-                        getEvolutions(it.speciesUrl.getPokemonIdByUrl())
-                    }
-                } )
+                    getEvolutions(it.speciesUrl.getPokemonIdByUrl())
+                })
             }
         }
     }
 
-    private fun getEvolutions(id:String) {
+    private fun getEvolutions(id: String) {
         CoroutineScope(Dispatchers.IO).launch {
             pokemonViewModel.getEvolutionChain(id)
             runOnUiThread {
                 pokemonViewModel.evolutions.observe(this@PokemonActivity, Observer {
-                    initRecyclerView(it)
+                    if (it != null) {
+                        binding.tvContainer3.text =
+                            it.evolutions.evolutionDetail[0].minLevel.toString()
+                        initRecyclerView(it)
+                    } else {
+                        showError()
+                    }
+
                 })
             }
         }
+    }
+
+    private fun showError() {
+        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -90,12 +101,13 @@ class PokemonActivity : AppCompatActivity() {
 
     private fun initRecyclerView(pokemonEvolutions: EvolutionChainResponse) {
         val allEvolutions = getAllPokemonEvolutions(pokemonEvolutions)
-        adapter = PokemonAdapter(allEvolutions){ onClick(it) }
-        binding.rvPokemonEvolution.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        adapter = PokemonAdapter(allEvolutions) { onClick(it) }
+        binding.rvPokemonEvolution.layoutManager =
+            LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.rvPokemonEvolution.adapter = adapter
     }
 
-    private fun onClick(pokemonSpecies: PokemonSpecies){
+    private fun onClick(pokemonSpecies: PokemonSpecies) {
         Toast.makeText(this, pokemonSpecies.pokemonName.firstCharUpper(), Toast.LENGTH_SHORT).show()
     }
 
@@ -106,7 +118,9 @@ class PokemonActivity : AppCompatActivity() {
 
         evo.add(pokemonEvolutions.evolutions)
 
-        while (flag){
+        //Cycle will a only list of all the pokemon evolutions
+
+        while (flag) {
             for (i in evo.indices) {
                 val pokemon = evo[i]
                 list.add(pokemon)
@@ -118,9 +132,9 @@ class PokemonActivity : AppCompatActivity() {
                 }
             }
         }
-        return if (list.size == 1){
+        return if (list.size == 1) {
             list
-        } else{
+        } else {
             emptyList()
         }
     }

@@ -8,17 +8,17 @@ import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonMod
 import com.example.pokedex.databinding.EvolutionItemBinding
 import com.squareup.picasso.Picasso
 
-class PokemonViewHolder(view: View): RecyclerView.ViewHolder(view){
+class PokemonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = EvolutionItemBinding.bind(view)
 
-     fun render(evolutionPokemonModel: EvolutionPokemonModel, onCLick: (PokemonSpecies) -> Unit){
-         Picasso.get().load(
-             "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
-                 evolutionPokemonModel.pokemonEvo.url.getPokemonIdByUrl()
-             }.png"
-         ).into(binding.ivEvolution)
-         itemView.setOnClickListener { onCLick(evolutionPokemonModel.pokemonEvo) }
-     }
+    fun render(evolutionPokemonModel: EvolutionPokemonModel, onCLick: (PokemonSpecies) -> Unit) {
+        Picasso.get().load(
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
+                evolutionPokemonModel.pokemonEvo.url.getPokemonIdByUrl()
+            }.png"
+        ).into(binding.ivEvolution)
+        itemView.setOnClickListener { onCLick(evolutionPokemonModel.pokemonEvo) }
+    }
 
 }

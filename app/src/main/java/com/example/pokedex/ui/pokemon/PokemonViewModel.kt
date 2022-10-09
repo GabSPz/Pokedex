@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
     private val getPokemonUseCase: GetPokemonUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _pokemon = MutableLiveData<PokemonModel>()
     private val _evolutions = MutableLiveData<EvolutionChainResponse>()
     private val _species = MutableLiveData<PokemonSpeciesModel>()
@@ -25,7 +25,7 @@ class PokemonViewModel @Inject constructor(
 
     val pokemon: LiveData<PokemonModel> = _pokemon
     val evolutions: LiveData<EvolutionChainResponse> = _evolutions
-    val species :LiveData<PokemonSpeciesModel> = _species
+    val species: LiveData<PokemonSpeciesModel> = _species
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun getPokemon(pokemonId: String) {
@@ -34,16 +34,14 @@ class PokemonViewModel @Inject constructor(
             val result = getPokemonUseCase.getPokemon(pokemonId)
             if (result != null) {
                 _pokemon.postValue(result!!)
-                _isLoading.postValue(false)
             }
         }
     }
 
     fun getEvolutionChain(pokemonId: String) {
-        _isLoading.postValue(true)
         viewModelScope.launch {
             val result = getPokemonUseCase.getEvolutionChain(pokemonId)
-            if (result != null){
+            if (result != null) {
                 _evolutions.postValue(result!!)
                 _isLoading.postValue(false)
             }
@@ -53,7 +51,7 @@ class PokemonViewModel @Inject constructor(
     fun getPokemonSpecies(pokemonId: String) {
         viewModelScope.launch {
             val result = getPokemonUseCase.getPokemonSpecies(pokemonId)
-            if (result != null){
+            if (result != null) {
                 _species.postValue(result!!)
             }
         }
