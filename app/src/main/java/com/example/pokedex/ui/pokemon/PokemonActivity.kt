@@ -98,6 +98,7 @@ class PokemonActivity : AppCompatActivity() {
         val list = mutableListOf<EvolutionPokemonModel>()
 
         evo.add(evolutionList.evolutions)
+
         while (flag){
             for (i in evo.indices) {
                 val pokemon = evo[i]
@@ -111,6 +112,10 @@ class PokemonActivity : AppCompatActivity() {
             }
 
         }
-        return list
+        return if(list.size == 1){
+            list
+        } else{
+            emptyList()
+        }
     }
 }
