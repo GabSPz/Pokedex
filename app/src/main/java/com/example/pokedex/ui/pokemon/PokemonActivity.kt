@@ -3,12 +3,14 @@ package com.example.pokedex.ui.pokemon
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.core.extensions.firstCharUpper
 import com.example.pokedex.core.extensions.getPokemonIdByUrl
+import com.example.pokedex.data.model.pokedexmodel.PokemonSpecies
 import com.example.pokedex.data.model.pokemonModel.PokemonModel
 import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
 import com.example.pokedex.data.network.responses.EvolutionChainResponse
@@ -88,16 +90,21 @@ class PokemonActivity : AppCompatActivity() {
 
     private fun initRecyclerView(pokemonEvolutions: EvolutionChainResponse) {
         val allEvolutions = getAllPokemonEvolutions(pokemonEvolutions)
-        adapter = PokemonAdapter(allEvolutions.toMutableList())
+        adapter = PokemonAdapter(allEvolutions){ onClick(it) }
         binding.rvPokemonEvolution.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.rvPokemonEvolution.adapter = adapter
     }
-    private fun getAllPokemonEvolutions(evolutionList: EvolutionChainResponse): List<EvolutionPokemonModel> {
+
+    private fun onClick(pokemonSpecies: PokemonSpecies){
+        Toast.makeText(this, pokemonSpecies.pokemonName.firstCharUpper(), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getAllPokemonEvolutions(pokemonEvolutions: EvolutionChainResponse): List<EvolutionPokemonModel> {
         var flag = true
         val evo = mutableListOf<EvolutionPokemonModel>()
         val list = mutableListOf<EvolutionPokemonModel>()
 
-        evo.add(evolutionList.evolutions)
+        evo.add(pokemonEvolutions.evolutions)
 
         while (flag){
             for (i in evo.indices) {
@@ -110,9 +117,8 @@ class PokemonActivity : AppCompatActivity() {
                     flag = false
                 }
             }
-
         }
-        return if(list.size == 1){
+        return if (list.size == 1){
             list
         } else{
             emptyList()

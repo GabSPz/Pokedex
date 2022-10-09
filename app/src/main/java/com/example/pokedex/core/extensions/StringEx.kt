@@ -12,14 +12,11 @@ fun String.getPokemonIdByUrl():String{
     while (flag){
         val number = this[this.length - cont].toString()
         if (number != "/"){
-            val order = id
-            id = number + order
+            id = number + id
             cont += 1
         } else{
             flag = false
         }
-
     }
-
     return id
 }
