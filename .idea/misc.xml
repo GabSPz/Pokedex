@@ -7,7 +7,9 @@
         <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/activity_main.xml" value="0.16394927536231885" />
         <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/activity_navigation.xml" value="0.1" />
         <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/activity_pokemon.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/evolution_item.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/activity_pokemon_place_holder.xml" value="0.16530797101449277" />
+        <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/evolution_item.xml" value="0.1" />
+        <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/evolution_place_holder_item.xml" value="0.15384615384615385" />
         <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/fragment_dashboard.xml" value="0.19375" />
         <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/fragment_explore.xml" value="0.19375" />
         <entry key="..\:/Users/sanga/AndroidStudioProjects/Pokedex/app/src/main/res/layout/fragment_home.xml" value="0.16394927536231885" />

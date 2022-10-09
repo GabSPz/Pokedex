@@ -38,16 +38,6 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    fun getEvolutionChain(pokemonId: String) {
-        viewModelScope.launch {
-            val result = getPokemonUseCase.getEvolutionChain(pokemonId)
-            if (result != null) {
-                _evolutions.postValue(result!!)
-                _isLoading.postValue(false)
-            }
-        }
-    }
-
     fun getPokemonSpecies(pokemonId: String) {
         viewModelScope.launch {
             val result = getPokemonUseCase.getPokemonSpecies(pokemonId)
@@ -57,4 +47,13 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
+    fun getEvolutionChain(pokemonId: String) {
+        viewModelScope.launch {
+            val result = getPokemonUseCase.getEvolutionChain(pokemonId)
+            if (result != null) {
+                _evolutions.postValue(result!!)
+                _isLoading.postValue(false)
+            }
+        }
+    }
 }

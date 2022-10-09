@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,8 +37,15 @@ class PokemonActivity : AppCompatActivity() {
 
         binding = ActivityPokemonBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         pokemonViewModel.isLoading.observe(this, Observer {
-            binding
+            if (it){
+                binding.sflPokemon.startShimmer()
+            }
+            binding.sflPokemon.isVisible = it
+            binding.tvPokemonName.isVisible = !it
+            binding.ivPokemonImage.isVisible = !it
+            binding.glContainer.isVisible = !it
         })
         getPokemonId()
     }
@@ -73,8 +81,6 @@ class PokemonActivity : AppCompatActivity() {
             runOnUiThread {
                 pokemonViewModel.evolutions.observe(this@PokemonActivity, Observer {
                     if (it != null) {
-                        binding.tvContainer3.text =
-                            it.evolutions.evolutionDetail[0].minLevel.toString()
                         initRecyclerView(it)
                     } else {
                         showError()
@@ -132,7 +138,9 @@ class PokemonActivity : AppCompatActivity() {
                 }
             }
         }
-        return if (list.size == 1) {
+        return if (list.size != 1) {
+            binding.rvPokemonEvolution.isVisible = true
+            binding.tvEvo.isVisible = true
             list
         } else {
             emptyList()
