@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokedex.core.extensions.getPokemonIdByUrl
 import com.example.pokedex.data.model.pokedexmodel.PokedexModel
 import com.example.pokedex.databinding.FragmentHomeBinding
 import com.example.pokedex.ui.adapter.pokedex.PokedexAdapter

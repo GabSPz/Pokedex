@@ -11,6 +11,7 @@ import com.example.pokedex.core.extensions.firstCharUpper
 import com.example.pokedex.core.extensions.getPokemonIdByUrl
 import com.example.pokedex.data.model.pokemonModel.PokemonModel
 import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
+import com.example.pokedex.data.network.responses.EvolutionChainResponse
 import com.example.pokedex.databinding.ActivityPokemonBinding
 import com.example.pokedex.ui.adapter.pokemon.PokemonAdapter
 import com.squareup.picasso.Picasso
@@ -26,7 +27,6 @@ class PokemonActivity : AppCompatActivity() {
     private val pokemonViewModel: PokemonViewModel by viewModels()
 
     private lateinit var pokemon : PokemonModel
-    private val evolutionList = mutableListOf<EvolutionPokemonModel>()
     private lateinit var adapter: PokemonAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +70,7 @@ class PokemonActivity : AppCompatActivity() {
             pokemonViewModel.getEvolutionChain(id)
             runOnUiThread {
                 pokemonViewModel.evolutions.observe(this@PokemonActivity, Observer {
-                    evolutionList.addAll(it.evolutions.evolves)
-                    getpo()
-                    initRecyclerView()
+                    initRecyclerView(it)
                 })
             }
         }
@@ -88,32 +86,31 @@ class PokemonActivity : AppCompatActivity() {
         binding.tvContainer2.text = "Weight: ${pokemon.weight} lb"
     }
 
-    private fun initRecyclerView(){
-        adapter = PokemonAdapter(evolutionList)
+    private fun initRecyclerView(pokemonEvolutions: EvolutionChainResponse) {
+        val allEvolutions = getAllPokemonEvolutions(pokemonEvolutions)
+        adapter = PokemonAdapter(allEvolutions.toMutableList())
         binding.rvPokemonEvolution.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.rvPokemonEvolution.adapter = adapter
     }
-    fun getpo() {
+    private fun getAllPokemonEvolutions(evolutionList: EvolutionChainResponse): List<EvolutionPokemonModel> {
         var flag = true
-        val cont = 0
         val evo = mutableListOf<EvolutionPokemonModel>()
         val list = mutableListOf<EvolutionPokemonModel>()
 
-        evo.addAll(evolutionList)
-        evolutionList.clear()
-
-        do{
+        evo.add(evolutionList.evolutions)
+        while (flag){
             for (i in evo.indices) {
-                if (evo.isNotEmpty()) {
-                    list.addAll(evo)
+                val pokemon = evo[i]
+                list.add(pokemon)
+                if (evo[i].evolves.isNotEmpty()) {
                     evo.clear()
-                    evo.addAll(list[i].evolves)
-                }else{
+                    evo.addAll(pokemon.evolves)
+                } else {
                     flag = false
-                    evolutionList.addAll(list)
                 }
             }
 
-        } while (!flag)
+        }
+        return list
     }
 }

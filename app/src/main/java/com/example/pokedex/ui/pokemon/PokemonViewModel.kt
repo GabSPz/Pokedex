@@ -26,7 +26,6 @@ class PokemonViewModel @Inject constructor(
     val pokemon: LiveData<PokemonModel> = _pokemon
     val evolutions: LiveData<EvolutionChainResponse> = _evolutions
     val species :LiveData<PokemonSpeciesModel> = _species
-
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun getPokemon(pokemonId: String) {
