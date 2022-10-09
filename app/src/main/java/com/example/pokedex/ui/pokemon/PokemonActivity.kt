@@ -39,7 +39,7 @@ class PokemonActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         pokemonViewModel.isLoading.observe(this, Observer {
-            if (it){
+            if (it) {
                 binding.sflPokemon.startShimmer()
             }
             binding.sflPokemon.isVisible = it
