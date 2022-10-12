@@ -14,11 +14,6 @@ class PermissionsManager(
     activity: Fragment,
     private val locationRepository: LocationRepository
 ) {
-    //private val _activity = MutableLiveData<Fragment>()
-    //private  var activity:Fragment = Fragment()
-
-    fun onCreate(activityFragmentActivity: Fragment) {
-    }
 
     private val locationPermissionProvider = activity.registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -27,12 +22,6 @@ class PermissionsManager(
             locationRepository.getUserLocation()
         }
     }
-
-    fun requestUserLocation() {
-        locationPermissionProvider.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        locationPermissionProvider.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-    }
-
     private val activityRecognitionPermissionProvider =
         activity.registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -40,6 +29,12 @@ class PermissionsManager(
             if (granted) {
             }
         }
+
+
+    fun requestUserLocation() {
+        locationPermissionProvider.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        locationPermissionProvider.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
 
     fun requestActivityRecognition() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

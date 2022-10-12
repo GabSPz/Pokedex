@@ -69,7 +69,9 @@ class PokemonActivity : AppCompatActivity() {
                     putPokemonInfo()
                 })
                 pokemonViewModel.species.observe(this@PokemonActivity, Observer {
-                    getEvolutions(it.speciesUrl.getPokemonIdByUrl())
+                    if (it != null){
+                        getEvolutions(it.speciesUrl.getPokemonIdByUrl())
+                    }
                 })
             }
         }
