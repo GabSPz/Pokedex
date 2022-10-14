@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.pokedex.data.model.pokedexmodel.PokedexModel
 import com.example.pokedex.databinding.FragmentPokemonOverlapBinding
+import com.example.pokedex.ui.explore.ExplorerFragment
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +31,7 @@ class PokemonOverlapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         pokemonOverlapViewModel =
-            ViewModelProvider(this).get(PokemonOverlapViewModel::class.java)
+            ViewModelProvider(this)[PokemonOverlapViewModel::class.java]
         _binding = FragmentPokemonOverlapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -39,20 +40,20 @@ class PokemonOverlapFragment : Fragment() {
         return root
     }
 
-    private fun closeInfo(){
+    private fun closeInfo() {
         getFragmentManager()?.beginTransaction()?.remove(this)?.commit()
         onDestroyView()
     }
 
     private fun putInfo(pokedexModel: PokedexModel) {
-        binding.tvOverlap.text = " Has encontrado a ${ pokedexModel.pokemonSpecies.pokemonName }"
+        binding.tvOverlap.text = " Has encontrado a ${pokedexModel.pokemonSpecies.pokemonName}"
         Picasso.get().load(
             "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokedexModel.pokemonId}.png"
         ).into(binding.ivOverlap)
     }
 
-    private fun getRandomPokemon(){
-        CoroutineScope(Dispatchers.IO).launch{
+    private fun getRandomPokemon() {
+        CoroutineScope(Dispatchers.IO).launch {
             pokemonOverlapViewModel.onCreate()
 
             activity?.runOnUiThread {

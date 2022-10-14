@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.*
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.pokedex.R
 import com.example.pokedex.core.NotificationsBuilder
@@ -21,13 +22,15 @@ import com.google.android.gms.maps.model.PolylineOptions
 
 
 class ExplorerFragment : Fragment(),
-    OnMapReadyCallback{
+    OnMapReadyCallback {
 
     private var _binding: FragmentExploreBinding? = null
 
     private lateinit var maps: GoogleMap
 
-    private  var explorerViewModel = ExplorerViewModel(this)
+    private var explorerViewModel = ExplorerViewModel(this)
+
+    private val pokemonView = MutableLiveData<Boolean>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -42,20 +45,25 @@ class ExplorerFragment : Fragment(),
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.fragmentCnt.isVisible = false
+        pokemonView.observe(viewLifecycleOwner, Observer {
+            binding.fragmentCnt.isVisible = it
+        })
 
         createMapInstance()
         explorerViewModel.onCreate()
+
         NotificationsBuilder.createChannel(this)
-        binding.btnStart.setOnClickListener{ onStartTravel() }
+
+        binding.btnStart.setOnClickListener { onStartTravel() }
         binding.btnGetPokemon.setOnClickListener { onGetPokemon() }
+
         return root
     }
 
-    private fun checkDistance(){
+    private fun checkDistance() {
         explorerViewModel.getDistance()
         explorerViewModel.distance.observe(viewLifecycleOwner, Observer {
-            if (it > 100){
+            if (it > 100) {
                 onGetPokemon()
                 explorerViewModel.resetDistance()
             }
@@ -63,14 +71,14 @@ class ExplorerFragment : Fragment(),
         })
     }
 
-    private fun onGetPokemon(){
+    private fun onGetPokemon() {
         childFragmentManager.beginTransaction()
             .show(PokemonOverlapFragment())
-        binding.fragmentCnt.isVisible = true
+        pokemonView.postValue(true)
         this.context?.let { NotificationsBuilder.createSimpleNotifications(it) }
     }
 
-    private fun onStartTravel(){
+    private fun onStartTravel() {
         if (binding.btnStart.text == getString(R.string.start_tracking)) {
 
             startTracking()
@@ -92,6 +100,7 @@ class ExplorerFragment : Fragment(),
         maps.uiSettings.isZoomControlsEnabled = true
 
     }
+
     private fun startTracking() {
         binding.tvDistance.text = ""
         maps.clear()
@@ -99,13 +108,13 @@ class ExplorerFragment : Fragment(),
         explorerViewModel.onStartExplore()
     }
 
-    private fun stopTracking(){
+    private fun stopTracking() {
         explorerViewModel.onStopExplore()
     }
 
     @SuppressLint("MissingPermission")
     private fun updateUi(uiModel: UiModel) {
-        if (uiModel.currentLocation != null && uiModel.currentLocation != maps.cameraPosition.target){
+        if (uiModel.currentLocation != null && uiModel.currentLocation != maps.cameraPosition.target) {
             maps.isMyLocationEnabled = true
             maps.animateCamera(CameraUpdateFactory.newLatLngZoom(uiModel.currentLocation, 15f))
         }
@@ -116,17 +125,18 @@ class ExplorerFragment : Fragment(),
 
     private fun drawTravelTrack(userTrack: List<LatLng>) {
         val polylineOptions = PolylineOptions()
-        val points =polylineOptions.points
+        val points = polylineOptions.points
 
         maps.clear()
         points.addAll(userTrack)
         maps.addPolyline(polylineOptions)
     }
 
-    private fun createMapInstance(){
+    private fun createMapInstance() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.core.view.size
@@ -45,13 +46,13 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.svPokedex.setOnQueryTextListener(this)
-        getPokedex()
+
         homeViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it){
                 binding.sflPokedex.startShimmer()
@@ -61,12 +62,15 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
             binding.svPokedex.isVisible = !it
         })
 
+        getPokedex()
+
         return root
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getPokedex() {
         CoroutineScope(Dispatchers.IO).launch {
+            //getting pokedex list
             homeViewModel.onCreate()
 
             activity?.runOnUiThread {
@@ -86,6 +90,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
                             pokedexSize = pokedex.size
                         } else{
                             //show error
+                            showError()
                         }
                     }
                 )
@@ -133,6 +138,10 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
             adapter.notifyDataSetChanged()
         }
         return false
+    }
+
+    private fun showError(){
+        Toast.makeText(this.context, "Error", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

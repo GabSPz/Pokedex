@@ -20,6 +20,7 @@ class PokemonViewModel @Inject constructor(
     private val getEvolutionUseCase: GetEvolutionUseCase,
     private val getSpeciesUseCase: GetSpeciesUseCase
 ) : ViewModel() {
+
     private val _pokemon = MutableLiveData<PokemonModel>()
     private val _evolutions = MutableLiveData<EvolutionChainResponse>()
     private val _species = MutableLiveData<PokemonSpeciesModel>()
