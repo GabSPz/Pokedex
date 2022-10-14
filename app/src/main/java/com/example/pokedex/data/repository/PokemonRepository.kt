@@ -11,15 +11,7 @@ class PokemonRepository @Inject constructor(
     private val pokemonService: PokemonService
 ) {
 
-    suspend fun getPokemon(pokemonId: String): PokemonModel?{
-        return pokemonService.getPokemon(pokemonId)
-    }
-
-    suspend fun getEvolutionChain(pokemonId: String): EvolutionChainResponse? {
-        return pokemonService.getEvolutionChain(pokemonId)
-    }
-
-    suspend fun getPokemonSpecies(pokemonId: String) : PokemonSpeciesModel? {
-        return pokemonService.getPokemonSpecies(pokemonId)
+    suspend operator fun invoke(pokemonId: String): PokemonModel?{
+        return pokemonService(pokemonId)
     }
 }

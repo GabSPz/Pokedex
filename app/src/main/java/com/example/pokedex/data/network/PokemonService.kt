@@ -11,24 +11,10 @@ import javax.inject.Inject
 class PokemonService @Inject constructor(
     private val apiService: ApiService
 ) {
-    suspend fun getPokemon(pokemonId: String): PokemonModel?{
+    suspend operator fun invoke(pokemonId: String): PokemonModel?{
         return withContext(Dispatchers.IO){
             val response = apiService.getPokemon(pokemonId)
             response.body()
-        }
-    }
-
-    suspend fun getEvolutionChain(pokemonId: String): EvolutionChainResponse?{
-        return withContext(Dispatchers.IO){
-            val response = apiService.getEvolutionChain(pokemonId)
-            response.body()
-        }
-    }
-
-    suspend fun getPokemonSpecies(pokemonId: String): PokemonSpeciesModel?{
-        return withContext(Dispatchers.IO){
-            val response = apiService.getPokemonSpecies(pokemonId)
-            response.body()?.evolutionChain
         }
     }
 }

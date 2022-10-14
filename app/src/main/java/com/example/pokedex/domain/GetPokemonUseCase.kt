@@ -10,15 +10,7 @@ import javax.inject.Inject
 class GetPokemonUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository
 ) {
-    suspend fun getPokemon(pokemonId: String): PokemonModel? {
-        return pokemonRepository.getPokemon(pokemonId)
-    }
-
-    suspend fun getEvolutionChain(pokemonId: String): EvolutionChainResponse? {
-        return pokemonRepository.getEvolutionChain(pokemonId)
-    }
-
-    suspend fun getPokemonSpecies(pokemonId: String): PokemonSpeciesModel? {
-        return pokemonRepository.getPokemonSpecies(pokemonId)
+    suspend operator fun invoke(pokemonId: String): PokemonModel? {
+        return pokemonRepository(pokemonId)
     }
 }

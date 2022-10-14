@@ -5,18 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokedex.data.model.pokemonModel.PokemonModel
-import com.example.pokedex.data.model.pokemonModel.evolution.EvolutionPokemonModel
 import com.example.pokedex.data.model.pokemonSpeciesModel.PokemonSpeciesModel
 import com.example.pokedex.data.network.responses.EvolutionChainResponse
+import com.example.pokedex.domain.GetEvolutionUseCase
 import com.example.pokedex.domain.GetPokemonUseCase
+import com.example.pokedex.domain.GetSpeciesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    private val getPokemonUseCase: GetPokemonUseCase
+    private val getPokemonUseCase: GetPokemonUseCase,
+    private val getEvolutionUseCase: GetEvolutionUseCase,
+    private val getSpeciesUseCase: GetSpeciesUseCase
 ) : ViewModel() {
     private val _pokemon = MutableLiveData<PokemonModel>()
     private val _evolutions = MutableLiveData<EvolutionChainResponse>()
@@ -31,7 +33,7 @@ class PokemonViewModel @Inject constructor(
     fun getPokemon(pokemonId: String) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            val result = getPokemonUseCase.getPokemon(pokemonId)
+            val result = getPokemonUseCase(pokemonId)
             if (result != null) {
                 _pokemon.postValue(result!!)
             }
@@ -40,7 +42,7 @@ class PokemonViewModel @Inject constructor(
 
     fun getPokemonSpecies(pokemonId: String) {
         viewModelScope.launch {
-            val result = getPokemonUseCase.getPokemonSpecies(pokemonId)
+            val result = getSpeciesUseCase(pokemonId)
             if (result != null) {
                 _species.postValue(result!!)
             }
@@ -49,7 +51,7 @@ class PokemonViewModel @Inject constructor(
 
     fun getEvolutionChain(pokemonId: String) {
         viewModelScope.launch {
-            val result = getPokemonUseCase.getEvolutionChain(pokemonId)
+            val result = getEvolutionUseCase(pokemonId)
             if (result != null) {
                 _evolutions.postValue(result!!)
                 _isLoading.postValue(false)

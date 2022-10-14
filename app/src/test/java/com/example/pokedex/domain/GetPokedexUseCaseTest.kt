@@ -1,4 +1,4 @@
-package com.example.pokedex
+package com.example.pokedex.domain
 
 import com.example.pokedex.data.repository.PokedexRepository
 import com.example.pokedex.domain.GetPokedexUseCase
