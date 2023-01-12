@@ -1,5 +1,6 @@
-package com.example.pokedex.data.network
+package com.example.pokedex.data.services
 
+import com.example.pokedex.data.network.ApiService
 import com.example.pokedex.data.network.responses.EvolutionChainResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

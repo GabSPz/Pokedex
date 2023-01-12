@@ -3,6 +3,7 @@ package com.example.pokedex.ui.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -126,14 +127,14 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
             initRecyclerView(pokedexList)
             adapter.notifyDataSetChanged()
         } else{
-            val searchText = newText!!.lowercase(Locale.getDefault())
+            val searchText = newText!!.lowercase()
             pokedexList.clear()
 
-            pokedexFilter.forEach {
-                if (it.pokemonSpecies.pokemonName.lowercase(Locale.getDefault()).contains(searchText)){
-                    pokedexList.add(it)
-                }
+            val pokemonFilters: List<PokedexModel> = pokedexFilter.filter {
+                it.pokemonSpecies.pokemonName.lowercase().contains(searchText)
             }
+            print(pokemonFilters)
+            pokedexList.addAll(pokemonFilters)
             initRecyclerView(pokedexList)
             adapter.notifyDataSetChanged()
         }

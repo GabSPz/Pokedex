@@ -8,4 +8,5 @@ class GetPokedexUseCase @Inject constructor(
     private val repository: PokedexRepository
 ) {
     suspend fun getPokedex(): List<PokedexModel> = repository.getPokedex()
+
 }

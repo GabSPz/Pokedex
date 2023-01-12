@@ -16,5 +16,9 @@
         android:name="com.example.pokedex.ui.explore.ExplorerFragment"
         android:label="@string/title_explore"
         tools:layout="@layout/fragment_explore" />
-
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.example.pokedex.ui.favorite.FavoriteFragment"
+        android:label="Favorite"
+        tools:layout="@layout/fragment_favorite" />
 </navigation>

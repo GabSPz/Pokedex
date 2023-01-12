@@ -1,7 +1,7 @@
 package com.example.pokedex.data.repository
 
 import com.example.pokedex.data.model.pokemonSpeciesModel.PokemonSpeciesModel
-import com.example.pokedex.data.network.SpeciesService
+import com.example.pokedex.data.services.SpeciesService
 import javax.inject.Inject
 
 class SpeciesRepository @Inject constructor(

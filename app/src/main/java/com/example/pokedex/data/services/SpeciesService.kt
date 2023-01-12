@@ -1,6 +1,7 @@
-package com.example.pokedex.data.network
+package com.example.pokedex.data.services
 
 import com.example.pokedex.data.model.pokemonSpeciesModel.PokemonSpeciesModel
+import com.example.pokedex.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

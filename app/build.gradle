@@ -79,6 +79,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:20.0.0'
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
     implementation 'com.google.maps.android:maps-utils-ktx:3.2.0'
+    //Room
+    implementation "androidx.room:room-ktx:2.4.0"
+    kapt "androidx.room:room-compiler:2.4.0"
     //MockWebServer
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     //Mock

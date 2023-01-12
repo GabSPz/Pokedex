@@ -11,5 +11,9 @@
         android:icon="@drawable/explore"
         android:title="@string/title_explore" />
 
+    <item
+        android:id="@+id/navigation_favorite"
+        android:icon="@android:drawable/btn_star"
+        android:title="Favorite" />
 
 </menu>

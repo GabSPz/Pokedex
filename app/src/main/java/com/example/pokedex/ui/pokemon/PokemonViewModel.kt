@@ -30,11 +30,12 @@ class PokemonViewModel @Inject constructor(
     val evolutions: LiveData<EvolutionChainResponse> = _evolutions
     val species: LiveData<PokemonSpeciesModel> = _species
     val isLoading: LiveData<Boolean> = _isLoading
+    val isFavorite = MutableLiveData<Boolean>()
 
     fun getPokemon(pokemonId: String) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            val result = getPokemonUseCase(pokemonId)
+            val result = getPokemonUseCase.getPokemon(pokemonId)
             if (result != null) {
                 _pokemon.postValue(result!!)
             }
@@ -57,6 +58,26 @@ class PokemonViewModel @Inject constructor(
                 _evolutions.postValue(result!!)
                 _isLoading.postValue(false)
             }
+        }
+    }
+
+    fun insertFavoritePokemon(pokemonModel: PokemonModel) {
+        viewModelScope.launch {
+            getPokemonUseCase.insertFavoritePokemon(pokemonModel)
+        }
+    }
+
+    fun deleteFavoritePokemon(name: String) {
+        viewModelScope.launch{
+            getPokemonUseCase.deleteFavoritePokemon(name)
+        }
+    }
+
+    fun checkIsFavorite(name: String){
+        viewModelScope.launch {
+            val result = getPokemonUseCase.getAllFavoritesChamp()
+            val isPokemonInFav = result.filter { it.pokemonSpecies.pokemonName == name }
+            isFavorite.postValue(isPokemonInFav.isNotEmpty())
         }
     }
 }
