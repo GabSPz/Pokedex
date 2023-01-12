@@ -47,7 +47,11 @@ class PokemonActivity : AppCompatActivity() {
             binding.ivPokemonImage.isVisible = !it
             binding.glContainer.isVisible = !it
         })
+        pokemonViewModel.isFavorite.observe(this) {
+            binding.cbFavorite.isChecked = it
+        }
         getPokemonId()
+        binding.cbFavorite.setOnClickListener { insertFavoritePokemon() }
     }
 
     private fun getPokemonId() {
@@ -67,6 +71,7 @@ class PokemonActivity : AppCompatActivity() {
                 pokemonViewModel.pokemon.observe(this@PokemonActivity, Observer {
                     pokemon = it
                     putPokemonInfo()
+                    pokemonViewModel.checkIsFavorite(pokemon.pokemonName)
                 })
                 pokemonViewModel.species.observe(this@PokemonActivity, Observer {
                     if (it != null){
@@ -147,5 +152,17 @@ class PokemonActivity : AppCompatActivity() {
         } else {
             emptyList()
         }
+    }
+
+    private fun insertFavoritePokemon() {
+
+            if (binding.cbFavorite.isChecked) {
+                pokemonViewModel.insertFavoritePokemon(pokemon)
+                Toast.makeText(this@PokemonActivity, "Saving in Favorites", Toast.LENGTH_SHORT).show()
+            } else {
+                pokemonViewModel.deleteFavoritePokemon(pokemon.pokemonName)
+                Toast.makeText(this@PokemonActivity, "Deleting of Favorites", Toast.LENGTH_SHORT).show()
+            }
+
     }
 }

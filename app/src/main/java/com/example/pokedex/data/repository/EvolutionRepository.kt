@@ -1,6 +1,6 @@
 package com.example.pokedex.data.repository
 
-import com.example.pokedex.data.network.EvolutionService
+import com.example.pokedex.data.services.EvolutionService
 import com.example.pokedex.data.network.responses.EvolutionChainResponse
 import javax.inject.Inject
 

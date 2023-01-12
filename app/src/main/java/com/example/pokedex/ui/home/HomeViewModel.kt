@@ -26,7 +26,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val result = getPokedexUseCase.getPokedex()
             if (result.isNotEmpty()){
-                _pokedexList.postValue(result)
+                _pokedexList.postValue(result.sortedBy {
+                    it.pokemonSpecies.pokemonName
+                })
                 _isLoading.postValue(false)
             }
         }

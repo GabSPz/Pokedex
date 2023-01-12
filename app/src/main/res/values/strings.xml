@@ -5,4 +5,6 @@
     <string name="distance_value">%d meters</string>
     <string name="stop_tracking">Finalizar</string>
     <string name="title_explore">Explore</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
